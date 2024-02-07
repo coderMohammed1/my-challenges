@@ -1,4 +1,5 @@
 # this will implemnt python round method in anoter way
+# try it yourself before taking a look
 
 # def round2(n:float,places:int):
 #     """
