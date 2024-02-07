@@ -1,8 +1,10 @@
 # this Python code will implement a simple calculator(it needs some improvments).
 #it is just to show genral concept of calculator programming by Python.
+# please try to solve it yourself before taking a look
+# you can test this: (4+3x(2+1))x2+(-9x2+(5+3))
 
-
- calc(n):
+def calc(n):
+    ind = 0
     isexpo = False
     num2 = 0
     exp0 = []
@@ -11,10 +13,21 @@
     exp = []  # List to store the parsed expression
     addition = []  # List to store addition and subtraction operations
     num = ""  # String to accumulate the current number
+    ismin = False
 
+    if n[0] == "-":
+        ismin = True
     # Phase 1: Parse the input expression
     for i in n:
-        if i == "+" or i == "-" or i == "x" or i == "÷" or i == "^":
+        if (i == "+" or i == "-" or i == "x" or i == "÷" or i == "^") and not ismin:
+            if n[ind+1] == "-":
+                ismin = True
+                exp0.append(num)
+                exp0.append(i)
+                num = ""
+                continue
+
+        if (i == "+" or i == "-" or i == "x" or i == "÷" or i == "^") and (not ismin):
             if i == "^":
                 isexpo = True
             exp0.append(num)
@@ -22,9 +35,12 @@
             num = ""
         else:
             num += i
+            ismin = False
+        ind+=1
     exp0.append(num)
+    print(exp0)
     
-
+    #exponants evaluation
     if(len(exp0) == 3 and isexpo == True):
         return float(exp0[0])**float(exp0[-1])
     else:
@@ -100,16 +116,26 @@
 
 
 def paran(n2):
-    
-    # if n2[0] == "-":
-    #     n2="10000000000000000"+n2
+    ind = 0
     result = ""
     arr=[]
     ispar=False
     num=""
+    ismin = False
+
+    if n2[0] == "-":
+        ismin = True
    
     for i in n2:
-        if  (i=="+" or i=="-" or i=="x" or i=="÷" or i=="^") and ispar == False:
+        if (i == "+" or i == "-" or i == "x" or i == "÷" or i == "^") and not ismin and ispar == False:
+            if n2[ind+1] == "-":
+                ismin = True
+                arr.append(num)
+                arr.append(i)
+                num = ""
+                continue
+
+        if  (i=="+" or i=="-" or i=="x" or i=="÷" or i=="^") and ispar == False and not ismin:
             arr.append(num)
             arr.append(i)
             num = ""
@@ -121,8 +147,11 @@ def paran(n2):
             ispar = False
         else:
             num = num + i
+            ismin = False
+        ind+=1
 
     arr.append(num)
+    print(arr)
     index = 0
     for j in arr:
         if j[0] == "(":
@@ -132,9 +161,79 @@ def paran(n2):
     for x in arr:
         result=result+str(x)
 
-    # if(n2[0] == "-"):
-    #     return calc(result)-10000000000000000
-    # else:
+   
     return calc(result)
 
-print(paran("(3+4)x2"))
+
+def nsated(n2):
+    starters = 0
+    enders = 0
+    nf = False
+    isn = False
+    ind = 0
+    result = ""
+    arr=[]
+    ispar=False
+    num=""
+    ismin = False
+
+    for i in n2:
+        if i == "(" and nf:
+            break
+        if i == "(":
+            nf = True
+        if i == ")":
+            nf = False
+    
+    if not nf:
+        return paran(n2)
+
+    if n2[0] == "-":
+        ismin = True
+   
+    for i in n2:
+        if (i == "+" or i == "-" or i == "x" or i == "÷" or i == "^") and not ismin and ispar == False:
+            if n2[ind+1] == "-":
+                ismin = True
+                arr.append(num)
+                arr.append(i)
+                num = ""
+                continue
+
+        if  (i=="+" or i=="-" or i=="x" or i=="÷" or i=="^") and ispar == False and not ismin:
+            arr.append(num)
+            arr.append(i)
+            num = ""
+        elif i == "(":
+            starters+=1
+            num = num + i
+            ispar = True
+        elif i == ")" and starters == (enders + 1):
+            num = num + i
+            ispar = False
+            starters = 0
+            enders = 0
+            arr.append(num)
+            num = ""
+        else:
+            num = num + i
+            ismin = False
+            if i == ")":
+                enders+=1
+        ind+=1
+    arr.append(num)
+
+    while '' in arr:
+        arr.remove('')
+
+    index = 0
+    for i in arr:
+        if i[0] == "(":
+            arr[index] = paran(i[1:-1])
+        index+=1
+    
+    result = ''.join(map(str, arr))
+    
+    return paran(result)
+
+print(nsated("(4+3x(2+1))x2+(-9x2+(5+3))"))
