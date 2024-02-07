@@ -5,6 +5,93 @@
 # ok for this challenge!
 #try yourself before taking a look 
 
+
+# from decimal to binary (you can use the one in python for better experience)
+
+def dtob(n):
+    point = False
+    right = ""
+    left = int(float(n))
+    n_str = str(n)
+    n_len = len(n_str)
+
+    for char in n_str:
+        if char == ".":
+            point = True
+            continue
+        if point:
+            right += char
+
+    if not point:
+        left_binary = []
+        result = ""
+        stop = False
+
+        while not stop:
+            left_binary.append(left % 2)
+            left = int(left / 2)
+
+            if left == 0:
+                stop = True
+
+        i = 1
+        arr_len = len(left_binary)
+
+        for _ in left_binary:
+            result += str(left_binary[arr_len - i])
+            i += 1
+
+        return result
+    else:
+        left_binary = []
+        result = ""
+        stop = False
+
+        while not stop:
+            left_binary.append(left % 2)
+            left = int(left / 2)
+
+            if left == 0:
+                stop = True
+
+        i = 1
+        arr_len = len(left_binary)
+
+        for _ in left_binary:
+            result += str(left_binary[arr_len - i])
+            i += 1
+
+        right = float("0." + right) * 2
+        intg = [int(right)]
+        stop = False
+        counter = 0
+
+        while not stop:
+            fract = ""
+            point2 = False
+
+            for char in str(right):
+                if char == ".":
+                    point2 = True
+                    continue
+                if point2:
+                    fract = fract + char
+
+            if fract == "0" or counter == 6:
+                stop = True
+                break
+
+            fract = float("0." + fract)
+            right = float(fract) * 2
+            intg.append(int(right))
+            counter += 1
+
+        result2 = ""
+        for x in intg:
+            result2 += str(x)
+
+        return result + "." + result2
+
 #truth table generator
 def trg(f,d2 = "no",d1 = "no",appe = "no"):   
     vari = ""
