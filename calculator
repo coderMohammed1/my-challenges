@@ -1,9 +1,8 @@
-# this Python code will implement a simple calculator(it needs some improvments).
-#it is just to show genral concept of calculator programming by Python.
-# please try to solve it yourself before taking a look
-# you can test this: (4+3x(2+1))x2+(-9x2+(5+3))
+def replace_substring(original_string, new_substring, start, end):
+    return original_string[:start] + new_substring + original_string[end:]
 
 def calc(n):
+    
     ind = 0
     isexpo = False
     num2 = 0
@@ -38,7 +37,6 @@ def calc(n):
             ismin = False
         ind+=1
     exp0.append(num)
-    print(exp0)
     
     #exponants evaluation
     if(len(exp0) == 3 and isexpo == True):
@@ -114,79 +112,15 @@ def calc(n):
 
     return result
 
-
-def paran(n2):
-    ind = 0
-    result = ""
-    arr=[]
-    ispar=False
-    num=""
-    ismin = False
-
-    if n2[0] == "-":
-        ismin = True
-   
-    for i in n2:
-        if (i == "+" or i == "-" or i == "x" or i == "÷" or i == "^") and not ismin and ispar == False:
-            if n2[ind+1] == "-":
-                ismin = True
-                arr.append(num)
-                arr.append(i)
-                num = ""
-                continue
-
-        if  (i=="+" or i=="-" or i=="x" or i=="÷" or i=="^") and ispar == False and not ismin:
-            arr.append(num)
-            arr.append(i)
-            num = ""
-        elif i == "(":
-            num = num + i
-            ispar = True
-        elif i == ")":
-            num = num + i
-            ispar = False
-        else:
-            num = num + i
-            ismin = False
-        ind+=1
-
-    arr.append(num)
-    print(arr)
-    index = 0
-    for j in arr:
-        if j[0] == "(":
-            arr[index] = calc(j[1:-1])
-        index+=1
-    
-    for x in arr:
-        result=result+str(x)
-
-   
-    return calc(result)
-
-
-def nsated(n2):
+def infparan(n2):
+    c = 0
     starters = 0
     enders = 0
-    nf = False
-    isn = False
     ind = 0
-    result = ""
     arr=[]
     ispar=False
     num=""
     ismin = False
-
-    for i in n2:
-        if i == "(" and nf:
-            break
-        if i == "(":
-            nf = True
-        if i == ")":
-            nf = False
-    
-    if not nf:
-        return paran(n2)
 
     if n2[0] == "-":
         ismin = True
@@ -225,15 +159,51 @@ def nsated(n2):
 
     while '' in arr:
         arr.remove('')
+        
 
-    index = 0
-    for i in arr:
-        if i[0] == "(":
-            arr[index] = paran(i[1:-1])
-        index+=1
+    z = 0
     
-    result = ''.join(map(str, arr))
+    for _ in arr:
+        if arr[z][0] == "(":
+            while True:
+                gdep = 0
+                mdep = 0
+                
+                msp = 0
+                mep = 0
+                
+                csp = 0
+                x = 0
+                
+                for j in arr[z]:
+                    if j == "(":
+                        gdep += 1
+                        csp = x
+                    
+                    if j == ")":
+                        if gdep > mdep:
+                            msp = csp
+                            
+                            mdep = gdep
+                            mep = x
+                        
+                        gdep -= 1
+                            
+                    x+=1
+                
+                pr = calc(arr[z][msp+1:mep])
+               
+                arr[z] = replace_substring(str(arr[z]),str(pr),msp,mep+1)
+                # print(arr[z])
+                
+                if mdep == 1:
+                    break 
+        z += 1
     
-    return paran(result)
+    res = ""
+    for k in arr:
+        res = res + k
+        
+    return calc(res)
 
-print(nsated("(4+3x(2+1))x2+(-9x2+(5+3))"))
+print(infparan("2x2+(5+3)+(6÷2x(2+3x(5+3)+1))+(2-1)"))
