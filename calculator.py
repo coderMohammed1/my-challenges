@@ -1,3 +1,4 @@
+#stack way is not allowed (reinvent the wheel!)
 def replace_substring(original_string, new_substring, start, end):
     return original_string[:start] + new_substring + original_string[end:]
 
