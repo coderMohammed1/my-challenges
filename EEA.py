@@ -11,6 +11,13 @@ def EEAinv(B,A):
         return 0
     
     table = [[math.floor(A/B),A,B,A%B,0,1,0-1*math.floor(A/B)]] # the first row
+    # index 0 is quotient
+    # index 1 is the large number
+    #index 2 is the small number
+    #index 3 is reminder
+    #index 4 is T1
+    #index 5 is T2
+    #index 6 is T = T1-(T2*Q)
     
     p = 0 # a tracker for the previous row 
     c = 1 # a tracker for the current row
