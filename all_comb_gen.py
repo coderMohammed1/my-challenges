@@ -1,4 +1,5 @@
 # this will generate all combination of (chars array) from 1 to n 
+# I call this: 2-dimensional counters algorithm
 import string
 
 def pureb(n):
