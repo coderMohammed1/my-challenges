@@ -6,6 +6,7 @@
 # I used @ to make ! works like a binary operator and so the stack algorethem works with it!
 
 from collections import deque #stack
+from tabulate import tabulate # pip install tabulate to resolve any errors
 
 def Bpostfix(ex):
    operators = [".","+","!"]
@@ -131,5 +132,11 @@ def trg2(ex):
     
     return Map
         
+def print_table(Map, variables):
+    headers = variables + ["Result"]
+    rows = [[entry[var] for var in variables] + [entry["res"]] for entry in Map]
+    print(tabulate(rows, headers, tablefmt="grid"))
 
-print(trg2("(x.y+!(z+x))")) 
+result = trg2("(x.y+!(z+x))")
+variables = ["x", "y", "z"]
+print_table(result, variables)
