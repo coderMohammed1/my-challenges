@@ -8,6 +8,9 @@
 from collections import deque #stack
 from tabulate import tabulate # pip install tabulate to resolve any errors
 
+def dtob(n):
+    return bin(n).replace("0b", "")
+
 def Bpostfix(ex):
    operators = [".","+","!"]
    stack = deque()
