@@ -7,6 +7,9 @@
 
 from collections import deque #stack
 
+def dtob(n):  # Decimal to binary conversion
+    return bin(n)[2:]
+   
 def Bpostfix(ex):
    operators = [".","+","!"]
    stack = deque()
